@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Alta de usuarios · Partes de reparto</title>
+<style>
+body{margin:0;font-family:Poppins,system-ui,sans-serif;background:#f5f6f3;color:#1d2320}
+.card{max-width:420px;margin:40px auto;background:#fff;border:1px solid #e2e5e0;border-radius:12px;padding:18px 20px}
+h1{font-size:18px;margin:0 0 6px} p{color:#6b736e;font-size:14px}
+label{display:block;font-size:12px;font-weight:600;color:#6b736e;margin:12px 0 4px;text-transform:uppercase}
+input{width:100%;box-sizing:border-box;font:inherit;padding:10px;border:1px solid #cfd4cf;border-radius:8px}
+button{margin-top:16px;width:100%;padding:12px;border:0;border-radius:8px;background:#e11c24;color:#fff;font:inherit;font-weight:600;cursor:pointer}
+#msg{margin-top:14px;font-size:14px;white-space:pre-wrap}
+.ok{color:#1e7a3c}.err{color:#b3261e}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Alta de usuarios</h1>
+  <p>Crea aquí cada usuario (victor, cristian, farmacia, javi, laura). Después ejecuta <b>sql/2_asignar_roles.sql</b> en Neon para darle su rol. Un usuario sin rol no puede ver nada.</p>
+  <form id="f">
+    <label>Usuario</label><input id="u" autocapitalize="none" spellcheck="false" placeholder="ej.: victor">
+    <label>Contraseña (mínimo 8 caracteres)</label><input id="p" type="text" autocomplete="new-password">
+    <button id="b">Crear usuario</button>
+  </form>
+  <div id="msg"></div>
+</div>
+<script src="vendor/neon-supabase.js"></script>
+<script src="config.js"></script>
+<script>
+const C = window.CONFIG;
+const sb = window.NeonSupa.createClient({ auth: { url: C.NEON_AUTH_URL }, dataApi: { url: C.NEON_DATA_API_URL } });
+const msg = (t, cls) => { const m = document.getElementById("msg"); m.textContent = t; m.className = cls || ""; };
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const usuario = document.getElementById("u").value.trim().toLowerCase();
+  const password = document.getElementById("p").value;
+  if (!/^[a-z0-9._-]+$/.test(usuario)) return msg("El usuario solo puede tener letras sin acentos, números, punto o guion.", "err");
+  if (password.length < 8) return msg("La contraseña debe tener al menos 8 caracteres.", "err");
+  document.getElementById("b").disabled = true; msg("Creando…");
+  try {
+    const email = `${usuario}@${C.DOMINIO_USUARIOS}`;
+    const { error } = await sb.auth.signUp({ email, password, options: { data: { displayName: usuario } } });
+    if (error) {
+      msg(`No se ha podido crear "${usuario}".\n${error.message || error}\n\nSi dice que no hay sesión, puede que el usuario sí se haya creado pero Neon pida verificar el correo: desactiva la verificación de email en Neon > Auth y vuelve a intentarlo.`, "err");
+    } else {
+      msg(`Usuario "${usuario}" creado. Apunta la contraseña y dásela a la persona.`, "ok");
+      document.getElementById("u").value = ""; document.getElementById("p").value = "";
+    }
+  } catch (err) {
+    msg("Error de conexión: " + (err?.message || err), "err");
+  } finally {
+    try { await sb.auth.signOut(); } catch {}
+    document.getElementById("b").disabled = false;
+  }
+});
+</script>
+</body>
+</html>

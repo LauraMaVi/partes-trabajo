@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#e11c24">
+<title>Partes de reparto · Premier Pigs</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f6f6; --card:#fff; --ink:#1a1a1a; --muted:#707070; --line:#e4e4e4;
+  --accent:#e11c24; --accent-dark:#b8151c; --accent-soft:#fde8e9; --warn:#b26a00; --warn-soft:#fdf1df;
+  --ok:#2f6b4f; --ok-soft:#e6f0ea; --pend:#7a7f7c; --pend-soft:#eef0ee; --danger:#b8151c; --r:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.4}
+header{background:var(--accent);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:18px;margin:0;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+header .who{margin-left:auto;font-size:13px;opacity:.95;display:flex;gap:10px;align-items:center}
+header .who button{background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:6px;padding:5px 10px;font-size:13px}
+nav{display:flex;gap:4px;padding:10px 14px 0;background:var(--bg);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line);overflow-x:auto}
+nav:empty{display:none}
+nav button{border:0;background:none;padding:10px 14px;font:inherit;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button.on{color:var(--accent);border-bottom-color:var(--accent)}
+main{max-width:980px;margin:0 auto;padding:16px 14px 60px}
+section{display:none} section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.row>*{flex:1 1 160px}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent)}
+input,select,textarea{width:100%;font:inherit;padding:10px;border:1px solid #cfd4cf;border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:44px;resize:vertical}
+input[type=time]{min-width:110px}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:8px;padding:10px 14px;font-weight:600}
+.btn:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark)}
+.btn.sec{background:#fff;color:var(--accent)}
+.btn.sec:hover:not(:disabled){background:var(--accent-soft);color:var(--accent-dark)}
+.btn.ghost:hover:not(:disabled){background:var(--accent-soft);border-color:transparent;color:var(--accent-dark)}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted);padding:6px 8px}
+.btn.small{padding:7px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+h2{font-size:17px;margin:4px 0 12px}
+h3{font-size:15px;margin:0 0 8px}
+.muted{color:var(--muted);font-size:13px}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px}
+.b-p{background:var(--pend-soft);color:var(--pend)} .b-r{background:var(--warn-soft);color:var(--warn)} .b-ok{background:var(--ok-soft);color:var(--ok)}
+.trip-hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.timefield{display:flex;gap:6px;align-items:center}
+.timefield input{flex:1}
+.dest{border-top:1px dashed var(--line);padding:10px 0 4px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+@media (max-width:520px){.dest{grid-template-columns:1fr}}
+.dest .what{font-weight:600}
+.dest .arts{font-size:13px;color:var(--muted);white-space:pre-wrap}
+.dest-rows .drow{display:grid;grid-template-columns:1fr 1.3fr auto;gap:8px;margin-bottom:8px;align-items:start}
+@media (max-width:560px){.dest-rows .drow{grid-template-columns:1fr auto}.dest-rows .drow textarea{grid-column:1/-1;grid-row:2}}
+.day{margin-bottom:22px}
+.day>h2{border-bottom:2px solid var(--accent);padding-bottom:4px}
+.day>h2::first-letter{text-transform:uppercase}
+.sum{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.sum b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.tbl-wrap{overflow-x:auto}
+.empty{color:var(--muted);text-align:center;padding:26px 10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.kpi .v{font-size:24px;font-weight:700;line-height:1.2}
+.kpi .l{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.kpi .s{font-size:12px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:12px}
+.grid2>.card{margin-bottom:0}
+.bars td{padding:6px 8px}
+.bar{height:10px;background:var(--accent);border-radius:0 4px 4px 0;min-width:2px}
+.barcell{width:40%}
+@media (max-width:560px){.barcell{display:none}.grid2{grid-template-columns:1fr}}
+.cols{display:flex;align-items:flex-end;gap:2px;height:160px;border-bottom:1px solid var(--line);padding-top:8px}
+.cols .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.cols .c i{display:block;background:var(--accent);border-radius:4px 4px 0 0;min-height:0}
+.cols .c:hover i{background:var(--accent-dark)}
+.cols-x{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px}
+.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+#ver-como{width:auto;padding:5px 8px;font-size:13px;border-radius:6px;border:0;background:rgba(255,255,255,.18);color:#fff}
+#ver-como option{color:#1a1a1a}
+#banner-vista{background:#fff4d6;color:#6b4e00;font-size:14px;padding:8px 18px;border-bottom:1px solid #f0dca0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#banner-vista button{border:1px solid #c9a227;background:#fff;color:#6b4e00;border-radius:6px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+#status{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:#1d2320;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;display:none;z-index:20;max-width:90vw}
+.picker{display:flex;gap:10px;flex-wrap:wrap}
+.picker .btn{flex:1;font-size:17px;padding:14px}
+.inline-add{display:none;margin-top:8px}
+.inline-add.on{display:block}
+.task{display:grid;grid-template-columns:1fr auto;gap:6px 10px;border-top:1px dashed var(--line);padding:10px 0}
+.task:first-child{border-top:0}
+#login{max-width:380px;margin:40px auto}
+#login .btn{width:100%;margin-top:14px;padding:12px}
+#login-err{color:var(--danger);font-size:14px;margin-top:10px;min-height:1em}
+</style>
+</head>
+<body>
+<header>
+  <h1>Partes de reparto</h1>
+  <span class="who"><select id="ver-como" style="display:none" title="Ver la app como otro usuario"></select><span id="who"></span><button id="btn-salir" style="display:none">Salir</button></span>
+</header>
+<div id="banner-vista" style="display:none"></div>
+<nav id="tabs"></nav>
+<main>
+
+  <!-- LOGIN -->
+  <section id="v-login">
+    <div class="card" id="login">
+      <h2>Entrar</h2>
+      <form id="login-form">
+        <label for="l-user">Usuario</label>
+        <input id="l-user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="ej.: victor">
+        <label for="l-pass" style="margin-top:12px">Contraseña</label>
+        <input id="l-pass" type="password" autocomplete="current-password">
+        <button class="btn" type="submit" id="l-btn">Entrar</button>
+        <div id="login-err"></div>
+      </form>
+    </div>
+  </section>
+
+  <!-- PARTES (consulta) -->
+  <section id="v-parte">
+    <div class="card">
+      <div class="row">
+        <div><label>Desde</label><input type="date" id="f-desde"></div>
+        <div><label>Hasta</label><input type="date" id="f-hasta"></div>
+        <div><label>Repartidor</label><select id="f-rep"><option value="">Todos</option></select></div>
+        <div style="flex:0 0 auto"><button class="btn sec" id="btn-copy">Copiar para Excel</button></div>
+      </div>
+    </div>
+    <div id="parte-list"><div class="empty">Cargando…</div></div>
+  </section>
+
+  <!-- ASIGNAR VIAJE (farmacia) -->
+  <section id="v-nuevo">
+    <div class="card" id="nuevo-card"></div>
+    <div class="card" id="tarea-card">
+      <h2>Mandar otra tarea</h2>
+      <div class="row">
+        <div><label>Fecha</label><input type="date" id="at-fecha"></div>
+        <div><label>Repartidor</label><select id="at-rep"></select></div>
+        <div style="flex-basis:100%"><label>Qué tarea</label><textarea id="at-desc" placeholder="Ej.: recoger material en oficina, limpiar furgoneta…"></textarea></div>
+      </div>
+      <div style="margin-top:12px"><button class="btn" id="at-save">Mandar tarea</button> <span class="muted">El repartidor la verá en su parte y apuntará la hora de inicio y de fin.</span></div>
+    </div>
+  </section>
+
+  <!-- INFORMES -->
+  <section id="v-informes">
+    <div class="card">
+      <div class="row">
+        <div><label>Desde</label><input type="date" id="i-desde"></div>
+        <div><label>Hasta</label><input type="date" id="i-hasta"></div>
+        <div><label>Repartidor</label><select id="i-rep"><option value="">Todos</option></select></div>
+        <div style="flex:0 0 auto;display:flex;gap:6px">
+          <button class="btn sec small" data-rango="7">7 días</button>
+          <button class="btn sec small" data-rango="30">30 días</button>
+          <button class="btn sec small" data-rango="365">1 año</button>
+        </div>
+      </div>
+    </div>
+    <div id="informes-body"><div class="card empty">Cargando…</div></div>
+  </section>
+
+  <!-- MI PARTE (repartidor) -->
+  <section id="v-mi">
+    <div id="mi-picker" class="card" style="display:none">
+      <h2>¿De qué repartidor quieres ver el parte?</h2>
+      <div class="picker" id="mi-picker-btns"></div>
+    </div>
+    <div id="mi-body" style="display:none">
+      <div class="card">
+        <div class="row">
+          <div><label>Repartidor</label><div style="display:flex;gap:8px;align-items:center;min-height:42px"><b id="mi-nombre" style="font-size:17px"></b><button class="btn ghost small" id="mi-cambiar" style="display:none">Cambiar</button></div></div>
+          <div><label>Fecha</label><input type="date" id="mi-fecha"></div>
+        </div>
+      </div>
+      <h2>1 · Viajes de reparto</h2>
+      <div id="mi-viajes"></div>
+      <div class="card">
+        <button class="btn sec" id="mi-add-viaje-btn">+ Añadir un viaje que no estaba asignado</button>
+        <div class="inline-add" id="mi-add-viaje"></div>
+      </div>
+      <h2 style="margin-top:22px">2 · Otras tareas (después del reparto)</h2>
+      <div class="card" id="mi-tareas"></div>
+      <div class="card">
+        <h3>Nueva tarea</h3>
+        <div class="row">
+          <div style="flex-basis:100%"><label>Qué tarea</label><input type="text" id="t-desc" placeholder="Ej.: limpiar furgoneta, llevar papeles a oficina…"></div>
+          <div><label>Quién la ha mandado</label><input type="text" id="t-por" list="dl-mandantes" placeholder="Ej.: Javi"></div>
+          <div><label>Hora inicio</label><div class="timefield"><input type="time" id="t-ini"><button class="btn sec small" data-now="t-ini">Ahora</button></div></div>
+          <div><label>Hora fin</label><div class="timefield"><input type="time" id="t-fin"><button class="btn sec small" data-now="t-fin">Ahora</button></div></div>
+        </div>
+        <div style="margin-top:10px"><button class="btn" id="t-save">Guardar tarea</button> <span class="muted">Puedes dejar la hora de fin vacía y ponerla al acabar.</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<datalist id="dl-lugares"></datalist>
+<datalist id="dl-mandantes"><option value="Farmacia"><option value="Javi"></datalist>
+<div id="status"></div>
+
+<script src="vendor/neon-supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
